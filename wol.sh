@@ -1,73 +1,114 @@
 #!/usr/bin/bash
 
-# Forked Script from: https://github.com/leestevetk/WoL.sh/
-
-# MIT License
-
-# Copyright (c) 2020 Steve's Toolkit
-
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-
 # Mac address variables
 
-# Display help if no arguments
-if [ $# -le 0]; then
+A0="98:90:96:ae:d6:5a"
 
-	printf "Wake-On-LAN Utility
-	This utility sends a magic packet to wake up a machine properly configured to listen to Wake-On-LAN/WLAN requests.
-		Usage:  WoL.sh [MAC] [IP] [Port]
-		
-		MAC:	mandatory, MAC address of the target machine
-		
-		IP:		optional, the magic packet will be sent to this IP
-				default: 255.255.255.255 (broadcast to all IPs)
-			
-		Port:	optional, the magic packet will be sent to this port
-				default: 9
-	   "
-	else
+A1=""
+A2=""
+A3="98:90:96:ae:b2:4d"
+A4="98:90:96:ae:c2:67"
+A5="98:90:96:ae:d7:88"
+A6="98:90:96:ae:c2:4c"
+A7="98:90:96:ae:d7:0b"
+A8=""
 
-		# Remove separators from MAC address input
-		targetmac=$(echo $1 | sed 's/[ :-]//g')
+B1=""
+B2="98:90:96:ae:9f:2c"
+B3="98:90:96:ae:b6:bf"
+B4="98:90:96:ae:b6:b1"
+B5=""
+B6="98:90:96:ae:aa:0a"
+B7="98:90:96:ae:d2:03"
+B8=""
 
-		# Magic packet consists of 12 f followed by 16 repetitions of target's MAC address, read https://en.wikipedia.org/wiki/Wake-on-LAN#Magic_packet
-		magicpacket=$(printf "f%.0s" {1..12}; printf "$targetmac%.0s" {1..16})
-		
-		# Hex-escape
-		magicpacket=$(echo $magicpacket | sed -e 's/../\\x&/g')
-		
-		# Apply defaults
-			if [ $# -ge 3 ]; then
-				targetip=$2
-				targetport=$3
-			elif [ $# -eq 2 ]; then
-				targetip=$2
-				targetport=9
-	else
-		targetip="255.255.255.255"
-		targetport=""
-	fi
+C1=""
+C2="98:90:96:ae:d4:04"
+C3="98:90:96:ae:d9:61"
+C4="98:90:96:ae:d7:b7"
+C5="98:90:96:ae:c3:38"
+C6="98:90:96:ae:bc:83"
+C7="98:90:96:ae:d6:37"
+C8=""
+
+D1=""
+D2="98:90:96:ae:d8:11"
+D3="98:90:96:ae:c7:3d"
+D4="98:90:96:ae:c2:94"
+D5="98:90:96:ae:d3:36"
+D6="98:90:96:ae:d2:fb"
+D7="98:90:96:ae:b1:36"
+D8=""
+
+E1=""
+E2=""
+E3=""
+E4=""
+E5="98:90:96:ae:d8:d2"
+E6="98:90:96:ae:d3:24"
+E7="98:90:96:ae:d6:98"
+E8=""
+
+xeon2="$B2 $C2 $D2"
+xeon3="$A3 $B3 $C3 $D3"
+xeon4="$A4 $B4 $C4 $D4 $A0"
+xeon5="$A5 $C5 $D5 $E5"
+xeon6="$A6 $B6 $C6 $D6 $E6"
+xeon7="$A7 $B7 $C7 $D7 $E7"
+
+
+# Display help if there aren't arguments
+if [ $# -le 0 ]; then
+
+	printf "
+	Wake-On-LAN
+This utility sends a magic packet to wake up a machine properly configured to listen to Wake-On-LAN/WLAN requests.
+	Usage:  wol.sh [PC-NAME] ... [PC-GROUP]
 	
-	# Send magic packet
-	printf "Sending magic packet..." 
-	echo -e $magicpacket | nc -w1 -u $targetip $targetport
-	printf " Done!"
+	PC-NAME:	Example: 
+					wol.sh E5
+					wol.sh B2 B3
+					wol.sh B6 A2 C8 E5
 	
+	PC-GROUP:	Example: 
+					wol.sh all
+					wol.sh xeon
+					wol.sh i9
+					wol.sh old
+"
+exit
 fi
+
+for i in "$@";
+do
+	printf "$i: "
+	case $i in
+		[Xx]eon)
+			echo "wol A4 B4 C4 D4 A0"
+			wol $xeon4
+			sleep 2
+			echo "wol A5 C5 D5 E5"
+			wol $xeon5
+			sleep 2
+			echo "wol A3 B3 C3 D3"
+			wol $xeon3
+			sleep 2
+			echo "wol A6 B6 C6 D6 E6"
+			wol $xeon6
+			sleep 2
+			echo "wol B2 C2 D2"
+			wol $xeon2
+			sleep 2
+			echo "wol A7 B7 C7 D7 E7"
+			wol $xeon7
+			sleep 2
+		;;
+		[Aa-Ee][1-8]|A0)
+			aux="$i"
+			wol ${!aux}
+		;;
+		*)
+			echo "argument error"
+		;;
+	esac
+done
