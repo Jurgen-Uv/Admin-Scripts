@@ -49,13 +49,9 @@ E6="98:90:96:ae:d3:24"
 E7="98:90:96:ae:d6:98"
 E8=""
 
-xeon2="$B2 $C2 $D2"
-xeon3="$A3 $B3 $C3 $D3"
-xeon4="$A4 $B4 $C4 $D4 $A0"
-xeon5="$A5 $C5 $D5 $E5"
-xeon6="$A6 $B6 $C6 $D6 $E6"
-xeon7="$A7 $B7 $C7 $D7 $E7"
-
+i9=("$E1" "$E2")
+xeon=("$A4" "$B4" "$C4" "$D4" "$A0" "$A5" "$C5" "$D5" "$E5" "$A3" "$B3" "$C3" "$D3" "$A6" "$B6" "$C6" "$D6" "$E6" "$B2" "$C2" "$D2" "$A7" "$B7" "$C7" "$D7" "$E7" )
+old=("$A1" "$A2" "$A8" "$B1" "$B5" "$B8" "$C1" "$C8" "$D1" "$D8" "$E8")
 
 # Display help if there aren't arguments
 if [ $# -le 0 ]; then
@@ -79,29 +75,36 @@ This utility sends a magic packet to wake up a machine properly configured to li
 exit
 fi
 
+on(){
+	arr=("$@")
+	for k in ${arr[@]};
+	do
+		echo $k
+		wol $k
+		sleep 0.4
+	done
+}
+
+old(){
+	for k in "${old[@]}";
+	do
+		wol $k
+		sleep 0.5
+	done
+}
+
 for i in "$@";
 do
 	printf "$i: "
 	case $i in
+		[Ii]9)
+			on ${i9[@]}
+		;;
 		[Xx]eon)
-			echo "wol A4 B4 C4 D4 A0"
-			wol $xeon4
-			sleep 2
-			echo "wol A5 C5 D5 E5"
-			wol $xeon5
-			sleep 2
-			echo "wol A3 B3 C3 D3"
-			wol $xeon3
-			sleep 2
-			echo "wol A6 B6 C6 D6 E6"
-			wol $xeon6
-			sleep 2
-			echo "wol B2 C2 D2"
-			wol $xeon2
-			sleep 2
-			echo "wol A7 B7 C7 D7 E7"
-			wol $xeon7
-			sleep 2
+			on ${xeon[@]}
+		;;
+		[Oo]ld)
+			on ${old[@]}
 		;;
 		[Aa-Ee][1-8]|A0)
 			aux="$i"
@@ -112,3 +115,4 @@ do
 		;;
 	esac
 done
+
