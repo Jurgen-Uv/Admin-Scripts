@@ -2,56 +2,58 @@
 
 # Mac address variables
 
-A0="98:90:96:ae:d6:5a"
+A0="98:90:96:ae:d6:5a" a0=$A0
 
-A1=""
-A2=""
-A3="98:90:96:ae:b2:4d"
-A4="98:90:96:ae:c2:67"
-A5="98:90:96:ae:d7:88"
-A6="98:90:96:ae:c2:4c"
-A7="98:90:96:ae:d7:0b"
-A8=""
+A1="" a1=$A1
+A2="" a2=$A2
+A3="98:90:96:ae:b2:4d" a3=$A3
+A4="98:90:96:ae:c2:67" a4=$A4
+A5="98:90:96:ae:d7:88" a5=$A5
+A6="98:90:96:ae:c2:4c" a6=$A6
+A7="98:90:96:ae:d7:0b" a7=$A7
+A8="" a8=$A8
 
-B1=""
-B2="98:90:96:ae:9f:2c"
-B3="98:90:96:ae:b6:bf"
-B4="98:90:96:ae:b6:b1"
-B5=""
-B6="98:90:96:ae:aa:0a"
-B7="98:90:96:ae:d2:03"
-B8=""
+B1="" b1=$B1
+B2="98:90:96:ae:9f:2c" b2=$B2
+B3="98:90:96:ae:b6:bf" b3=$B3
+B4="98:90:96:ae:b6:b1" b4=$B4
+B5="18:a9:05:b6:d2:aa" b5=$B5
+B6="98:90:96:ae:aa:0a" b6=$B6
+B7="98:90:96:ae:d2:03" b7=$B7
+B8="b8:ac:6f:3f:ff:66" b8=$B8
 
-C1=""
-C2="98:90:96:ae:d4:04"
-C3="98:90:96:ae:d9:61"
-C4="98:90:96:ae:d7:b7"
-C5="98:90:96:ae:c3:38"
-C6="98:90:96:ae:bc:83"
-C7="98:90:96:ae:d6:37"
-C8=""
+C1="" c1=$C1
+C2="98:90:96:ae:d4:04" c2=$C2
+C3="98:90:96:ae:d9:61" c3=$C3
+C4="98:90:96:ae:d7:b7" c4=$C4
+C5="98:90:96:ae:c3:38" c5=$C5
+C6="98:90:96:ae:bc:83" c6=$C6
+C7="98:90:96:ae:d6:37" c7=$C7
+C8="" c8=$C8
 
-D1=""
-D2="98:90:96:ae:d8:11"
-D3="98:90:96:ae:c7:3d"
-D4="98:90:96:ae:c2:94"
-D5="98:90:96:ae:d3:36"
-D6="98:90:96:ae:d2:fb"
-D7="98:90:96:ae:b1:36"
-D8=""
+D1="" d1=$D1
+D2="98:90:96:ae:d8:11" d2=$D2
+D3="98:90:96:ae:c7:3d" d3=$D3
+D4="98:90:96:ae:c2:94" d4=$D4
+D5="98:90:96:ae:d3:36" d5=$D5
+D6="98:90:96:ae:d2:fb" d6=$D6
+D7="98:90:96:ae:b1:36" d7=$D7
+D8="" d8=$D8
 
-E1=""
-E2=""
-E3=""
-E4=""
-E5="98:90:96:ae:d8:d2"
-E6="98:90:96:ae:d3:24"
-E7="98:90:96:ae:d6:98"
-E8=""
+E1="00:68:eb:c6:95:88" e1=$E1
+E2="00:68:eb:c6:94:92" e2=$E2
+E3="" e3=$E3
+E4="" e4=$E4
+E5="98:90:96:ae:d8:d2" e5=$E5
+E6="98:90:96:ae:d3:24" e6=$E6
+E7="98:90:96:ae:d6:98" e7=$E7
+E8="" e8=$E8
 
-i9=("$E1" "$E2")
-xeon=("$A4" "$B4" "$C4" "$D4" "$A0" "$A5" "$C5" "$D5" "$E5" "$A3" "$B3" "$C3" "$D3" "$A6" "$B6" "$C6" "$D6" "$E6" "$B2" "$C2" "$D2" "$A7" "$B7" "$C7" "$D7" "$E7" )
-old=("$A1" "$A2" "$A8" "$B1" "$B5" "$B8" "$C1" "$C8" "$D1" "$D8" "$E8")
+# Create groups of MACs
+
+i9=("E1" "E2")
+xeon=("A0" "A4" "A5" "B4" "C4" "C5" "D4" "D5" "E5" "A3" "A6" "B3" "B6" "C3" "C6" "D3" "D6" "E6" "A7" "B2" "B7" "C2" "C7" "D2" "D7" "E7" )
+old=("A1" "A2" "A8" "B1" "B5" "B8" "C1" "C8" "D1" "D8" "E8")
 
 # Display help if there aren't arguments
 if [ $# -le 0 ]; then
@@ -75,44 +77,50 @@ This utility sends a magic packet to wake up a machine properly configured to li
 exit
 fi
 
+# function for sending the wol command for groups (arrays of MACs)
 on(){
+	printf "\n"
 	arr=("$@")
 	for k in ${arr[@]};
 	do
-		echo $k
-		wol $k
+		printf "$k: "
+		wol ${!k}
 		sleep 0.4
 	done
-}
-
-old(){
-	for k in "${old[@]}";
-	do
-		wol $k
-		sleep 0.5
-	done
+	printf "\n"
 }
 
 for i in "$@";
 do
-	printf "$i: "
 	case $i in
 		[Ii]9)
+			printf "  [i9]"
 			on ${i9[@]}
 		;;
 		[Xx]eon)
+			printf "  [xeon]"
 			on ${xeon[@]}
 		;;
 		[Oo]ld)
+			printf "  [old]"
 			on ${old[@]}
 		;;
-		[Aa-Ee][1-8]|A0)
-			aux="$i"
-			wol ${!aux}
+		[Aa]ll)
+			printf "[all]\n  [i9]"
+			on ${i9[@]}
+			printf "  [xeon]"
+			on ${xeon[@]}
+			printf "  [old]"
+			on ${old[@]}
+		;;
+		[Aa-Ee][1-8]|[Aa]0)
+			printf "$i: "
+			wol ${!i}
 		;;
 		*)
 			echo "argument error"
 		;;
 	esac
+	sleep 0.4
 done
 
