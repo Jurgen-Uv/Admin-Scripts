@@ -4,25 +4,25 @@
 
 A0="98:90:96:ae:d6:5a" a0=$A0
 
-A1="" a1=$A1
-A2="" a2=$A2
+A1="18:a9:05:b6:d2:dd" a1=$A1
+A2="98:90:96:ae:d7:0b" a2=$A2
 A3="98:90:96:ae:b2:4d" a3=$A3
 A4="98:90:96:ae:c2:67" a4=$A4
 A5="98:90:96:ae:d7:88" a5=$A5
 A6="98:90:96:ae:c2:4c" a6=$A6
-A7="98:90:96:ae:d7:0b" a7=$A7
-A8="" a8=$A8
+A7="98:90:96:ae:c2:d3" a7=$A7
+A8="98:90:96:ae:b9:1a" a8=$A8
 
-B1="" b1=$B1
+B1="b8:ac:6f:40:29:13" b1=$B1
 B2="98:90:96:ae:9f:2c" b2=$B2
 B3="98:90:96:ae:b6:bf" b3=$B3
 B4="98:90:96:ae:b6:b1" b4=$B4
-B5="18:a9:05:b6:d2:aa" b5=$B5
+B5="98:90:96:ae:c3:c5" b5=$B5
 B6="98:90:96:ae:aa:0a" b6=$B6
 B7="98:90:96:ae:d2:03" b7=$B7
 B8="b8:ac:6f:3f:ff:66" b8=$B8
 
-C1="" c1=$C1
+C1="b8:ac:6f:3c:76:74" c1=$C1
 C2="98:90:96:ae:d4:04" c2=$C2
 C3="98:90:96:ae:d9:61" c3=$C3
 C4="98:90:96:ae:d7:b7" c4=$C4
@@ -31,7 +31,7 @@ C6="98:90:96:ae:bc:83" c6=$C6
 C7="98:90:96:ae:d6:37" c7=$C7
 C8="" c8=$C8
 
-D1="" d1=$D1
+D1="b8:ac:6f:3c:c6:81" d1=$D1
 D2="98:90:96:ae:d8:11" d2=$D2
 D3="98:90:96:ae:c7:3d" d3=$D3
 D4="98:90:96:ae:c2:94" d4=$D4
@@ -42,18 +42,19 @@ D8="" d8=$D8
 
 E1="00:68:eb:c6:95:88" e1=$E1
 E2="00:68:eb:c6:94:92" e2=$E2
-E3="" e3=$E3
+E3="98:90:96:ae:d6:74" e3=$E3
 E4="" e4=$E4
 E5="98:90:96:ae:d8:d2" e5=$E5
 E6="98:90:96:ae:d3:24" e6=$E6
 E7="98:90:96:ae:d6:98" e7=$E7
 E8="" e8=$E8
 
+bochica1="10:60:4b:af:da:08"
 # Create groups of MACs
 
 i9=("E1" "E2")
-xeon=("A0" "A4" "A5" "B4" "C4" "C5" "D4" "D5" "E5" "A3" "A6" "B3" "B6" "C3" "C6" "D3" "D6" "E6" "A7" "B2" "B7" "C2" "C7" "D2" "D7" "E7" )
-old=("A1" "A2" "A8" "B1" "B5" "B8" "C1" "C8" "D1" "D8" "E8")
+xeon=("A0" "A4" "A5" "B4" "B5" "C4" "C5" "D4" "D5" "E5" "A3" "A6" "B3" "B6" "C3" "C6" "D3" "D6" "E3" "E6" "A2" "A7" "B2" "B7" "C2" "C7" "D2" "D7" "E7" )
+old=("A1" "B1" "B8" "C1" "C8" "D1" "D8" "E8")
 
 # Display help if there aren't arguments
 if [ $# -le 0 ]; then
@@ -66,7 +67,7 @@ This utility sends a magic packet to wake up a machine properly configured to li
 	PC-NAME:	Example: 
 					wol.sh E5
 					wol.sh B2 B3
-					wol.sh B6 A2 C8 E5
+					wol.sh B6 A2 C5 E7
 	
 	PC-GROUP:	Example: 
 					wol.sh all
