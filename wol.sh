@@ -29,7 +29,7 @@ C4="98:90:96:ae:d7:b7" c4=$C4
 C5="98:90:96:ae:c3:38" c5=$C5
 C6="98:90:96:ae:bc:83" c6=$C6
 C7="98:90:96:ae:d6:37" c7=$C7
-C8="" c8=$C8
+C8="b8:ac:6f:3c:47:11" c8=$C8
 
 D1="b8:ac:6f:3c:c6:81" d1=$D1
 D2="98:90:96:ae:d8:11" d2=$D2
@@ -38,7 +38,7 @@ D4="98:90:96:ae:c2:94" d4=$D4
 D5="98:90:96:ae:d3:36" d5=$D5
 D6="98:90:96:ae:d2:fb" d6=$D6
 D7="98:90:96:ae:b1:36" d7=$D7
-D8="" d8=$D8
+D8="00:1f:29:02:eb:bd" d8=$D8
 
 E1="00:68:eb:c6:95:88" e1=$E1
 E2="00:68:eb:c6:94:92" e2=$E2
@@ -47,15 +47,18 @@ E4="" e4=$E4
 E5="98:90:96:ae:d8:d2" e5=$E5
 E6="98:90:96:ae:d3:24" e6=$E6
 E7="98:90:96:ae:d6:98" e7=$E7
-E8="" e8=$E8
+E8="18:a9:05:b6:d2:aa" e8=$E8
 
-bochica1="10:60:4b:af:da:08"
+crow0="10:60:4b:af:da:08"
+crow1="10:60:4b:af:ab:7c" crow=$crow1
+crow2="10:60:4b:af:"
+crow3="10:60:4b:af:cb:ac"
 # Create groups of MACs
 
 i9=("E1" "E2")
-xeon=("A0" "A4" "A5" "B4" "B5" "C4" "C5" "D4" "D5" "E5" "A3" "A6" "B3" "B6" "C3" "C6" "D3" "D6" "E3" "E6" "A2" "A7" "B2" "B7" "C2" "C7" "D2" "D7" "E7" )
+xeon=("A0" "A4" "A5" "B4" "B5" "C4" "C5" "D4" "D5" "E5" "A3" "A6" "B3" "B6" "C3" "C6" "D3" "D6" "E3" "E6" "A2" "A7" "B2" "B7" "C2" "C7" "D2" "D7" "E7" "A8" )
 old=("A1" "B1" "B8" "C1" "C8" "D1" "D8" "E8")
-
+cluster=("crow0" "crow1" "crow2" "crow3")
 # Display help if there aren't arguments
 if [ $# -le 0 ]; then
 
@@ -86,7 +89,7 @@ on(){
 	do
 		printf "$k: "
 		wol ${!k}
-		sleep 0.4
+		sleep 1
 	done
 	printf "\n"
 }
@@ -114,10 +117,19 @@ do
 			printf "  [old]"
 			on ${old[@]}
 		;;
-		[Aa-Ee][1-8]|[Aa]0)
+                [Cc]luster)
+                       	printf "  [cluster]"
+                        on ${cluster[@]}
+                ;;
+		crow|crow[0-3])
 			printf "$i: "
 			wol ${!i}
 		;;
+		[A-E][1-8]|[a-e][1-8]|[Aa]0)
+                        printf "$i: "
+                        wol ${!i}
+                ;;
+
 		*)
 			echo "argument error"
 		;;
