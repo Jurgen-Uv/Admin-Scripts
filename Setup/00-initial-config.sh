@@ -1,6 +1,4 @@
 #!/bin/bash
-# Enable fastest mirror and multidownload on dnf
-cp ./dnf.conf /etc/dnf/
 
 # Enable repositories
 dnf config-manager --set-enabled ha nfv plus powertools resilient-storage rt
